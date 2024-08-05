@@ -104,3 +104,27 @@ textarea {
       flex: 1 1 100%;
   }
 }
+/* Mobile devices (max-width: 481px) */
+@media only screen and (max-width: 481px) {
+    /* Styles for mobile devices */
+}
+
+/* Tablets (max-width: 1024px) */
+@media only screen and (max-width: 1024px) {
+    /* Styles for tablets */
+}
+
+/* Small screens (max-width: 1440px) */
+@media only screen and (max-width: 1440px) {
+    /* Styles for small screens */
+}
+
+/* Medium screens (max-width: 1920px) */
+@media only screen and (max-width: 1920px) {
+    /* Styles for medium screens */
+}
+
+/* Large screens (1921px and above) */
+@media only screen and (min-width: 1921px) {
+    /* Styles for large screens */
+}
