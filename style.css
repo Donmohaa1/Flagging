@@ -21,6 +21,8 @@ header {
 .logo {
   display: block;
   margin: 0 auto 20px;
+  max-width: 100%;
+  height: auto;
 }
 
 h1 {
@@ -104,27 +106,51 @@ textarea {
       flex: 1 1 100%;
   }
 }
-/* Mobile devices (max-width: 481px) */
-@media only screen and (max-width: 481px) {
-    /* Styles for mobile devices */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.2em;
+  }
+  .container {
+    padding: 10px;
+  }
+  .section {
+    margin: 5px;
+    padding: 10px;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  .submit-button button {
+    padding: 5px 10px;
+  }
 }
-
-/* Tablets (max-width: 1024px) */
 @media only screen and (max-width: 1024px) {
-    /* Styles for tablets */
+  h1 {
+      font-size: 1.8em;
+  }
+  .logo {
+      margin: 0 auto;
+  }
 }
 
-/* Small screens (max-width: 1440px) */
 @media only screen and (max-width: 1440px) {
-    /* Styles for small screens */
+  h1 {
+      font-size: 2em;
+  }
+  .logo {
+      margin: 0 auto;
+  }
 }
 
-/* Medium screens (max-width: 1920px) */
-@media only screen and (max-width: 1920px) {
-    /* Styles for medium screens */
-}
-
-/* Large screens (1921px and above) */
 @media only screen and (min-width: 1921px) {
-    /* Styles for large screens */
+  .container {
+      max-width: 1200px;
+  }
+  .logo {
+      margin: 0 auto;
+  }
 }
+
