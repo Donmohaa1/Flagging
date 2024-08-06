@@ -15,7 +15,7 @@ This repository contains the source code for the Golden Courts SARL Survey Form,
 
 ## Demo
 
-You can check out the live demo of the survey form [here](https://donmohaa1.github.io/Flagging/)).
+You can check out the live demo of the survey form [here](https://donmohaa1.github.io/Flagging/).
 
 ## Features
 
