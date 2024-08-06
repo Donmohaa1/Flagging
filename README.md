@@ -38,3 +38,12 @@ To get a local copy up and running, follow these simple steps:
 1. **Clone the repository:**
    ```sh
    git clone https://github.com/Donmohaa1/Flagging.git
+
+2. **Navigate to the project directory:**
+   cd forms-flagging
+
+## License
+Distributed under the MIT License. See LICENSE for more information.
+
+## Acknowledgements
+[Golden Courts](https://www.goldencourtsafrica.com/) SARL for their continuous support and cooperation.
