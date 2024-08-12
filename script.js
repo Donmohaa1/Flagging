@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alert('Error submitting form. Please try again.');
                 console.log(data.message);
+                console.log(data.errors);
                 
             }
         })
