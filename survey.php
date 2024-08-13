@@ -1,4 +1,5 @@
 <?php
+
 $servername = "127.0.0.1:3306";
 $username = "Flagg";
 $password = " 246@Gkenya";
@@ -9,7 +10,9 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Vérifier la connexion
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    // die("Connection failed: " . $conn->connect_error);
+    echo json_encode(['success' => false, 'message' => 'Connection failed: ' . $conn->connect_error]);
+    exit;
 }
 
 // Ajouter ou modifier des données
@@ -60,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Valider les fichiers téléchargés
     $fileFields = ['feriAdCertificate', 'customsEntryDoc', 'invoiceCopy', 'supportingDocs'];
+    $filePaths = [];
+
     foreach ($fileFields as $fileField) {
         if (!isset($_FILES[$fileField]) || $_FILES[$fileField]['error'] !== UPLOAD_ERR_OK) {
             $errors[] = ucfirst(str_replace('_', ' ', $fileField)) . ' is required and must be a valid file.';
@@ -67,6 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Vérifier la taille du fichier
             if ($_FILES[$fileField]['size'] > 10 * 1024 * 1024) { // Limite de 10MB
                 $errors[] = ucfirst(str_replace('_', ' ', $fileField)) . ' exceeds the 10MB size limit.';
+            } else {
+                // Déplacement du fichier vers le répertoire de destination
+                $targetPath = $uploadDir . basename($_FILES[$fileField]['name']);
+                if (move_uploaded_file($_FILES[$fileField]['tmp_name'], $targetPath)) {
+                    $filePaths[$fileField] = $targetPath;
+                } else {
+                    $errors[] = "Failed to move file for " . ucfirst(str_replace('_', ' ', $fileField));
+                }
             }
         }
     }
@@ -100,18 +113,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $freightCurrency = $conn->real_escape_string($_POST['freightCurrency']);
     $freightValue = $conn->real_escape_string($_POST['freightValue']);
     $validationNotes = $conn->real_escape_string($_POST['validationNotes']);
+    $customsEntryDoc = $conn->real_escape_string($_FILES['customsEntryDoc']['name']);
+    $invoiceCopy = $conn->real_escape_string($_FILES["invoiceCopy"]["name"]);
+    $feriAdCertificate = $conn->real_escape_string($_FILES["feriAdCertificate"]["name"]);
 
     // Vérifier si c'est une modification (si l'ID est présent)
     $id = $_POST['id'] ?? null;
     if ($id) {
         $sql = "UPDATE flag_data SET issuingBody='$issuingBody', certificateType='$certificateType', cargoOrigin='$cargoOrigin', shipmentRoute='$shipmentRoute', certificateNo='$certificateNo', customsDeclNo='$customsDeclNo', importerName='$importerName', importerContact='$importerContact', exporterName='$exporterName', agentName='$agentName', agentContact='$agentContact', transportMode='$transportMode', transporterName='$transporterName', vehicleNumber='$vehicleNumber', dischargeLocation='$dischargeLocation', finalDestination='$finalDestination', fobCurrency='$fobCurrency', fobValue='$fobValue', incoterm='$incoterm', freightCurrency='$freightCurrency', freightValue='$freightValue', validationNotes='$validationNotes' WHERE id='$id'";
     } else {
-        $sql = "INSERT INTO flag_data (issuingBody, certificateType, cargoOrigin, shipmentRoute, certificateNo, customsDeclNo, importerName, importerContact, exporterName, agentName, agentContact, transportMode, transporterName, vehicleNumber, dischargeLocation, finalDestination, fobCurrency, fobValue, incoterm, freightCurrency, freightValue, validationNotes) VALUES ('$issuingBody', '$certificateType', '$cargoOrigin', '$shipmentRoute', '$certificateNo', '$customsDeclNo', '$importerName', '$importerContact', '$exporterName', '$agentName', '$agentContact', '$transportMode', '$transporterName', '$vehicleNumber', '$dischargeLocation', '$finalDestination', '$fobCurrency', '$fobValue', '$incoterm', '$freightCurrency', '$freightValue', '$validationNotes')";
+        $sql = "INSERT INTO flag_data (issuingBody, certificateType, cargoOrigin,shipmentRoute, certificateNo, customsDeclNo, importerName, importerContact, exporterName, agentName, agentContact, transportMode, transporterName, vehicleNumber, dischargeLocation, finalDestination, fobCurrency, fobValue, incoterm, freightCurrency, freightValue, validationNotes,customsEntryDoc,invoiceCopy,feriAdCertificate) VALUES ('$issuingBody', '$certificateType', '$cargoOrigin', '$shipmentRoute', '$certificateNo', '$customsDeclNo', '$importerName', '$importerContact', '$exporterName', '$agentName', '$agentContact', '$transportMode', '$transporterName', '$vehicleNumber', '$dischargeLocation', '$finalDestination', '$fobCurrency', '$fobValue', '$incoterm', '$freightCurrency', '$freightValue', '$validationNotes','$customsEntryDoc','$invoiceCopy','$feriAdCertificate')";
     }
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(['success' => true]);
     } else {
+        error_log("SQL Error: " . $conn->error);
         echo json_encode(['success' => false, 'message' => 'Error: ' . $conn->error]);
     }
 
