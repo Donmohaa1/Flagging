@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const formData = new FormData(form);
 
-        fetch('/Flagging-main/survey.php', {
+        fetch('survey.php', {
             method: 'POST',
             body: formData
         })
